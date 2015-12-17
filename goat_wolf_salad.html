@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<h3>Goat-Wolf-Salad</h3>
+	<hr>
+	<table>
+	<tr>
+			<td >Left Side of River</td>
+			<td colspan="2" style="text-align: center;">River Area</td>
+			<td>Right Side of River</td>
+		</tr>
+		<tr>
+			<td id="td_goatLeft"><input type="radio" name="leftContaner" id="goatLeft" value="Goat"/>&nbsp;&nbsp;<label for="goatLeft">Goat</label></td>
+			<td></td>
+			<td></td>
+			<td id="td_goatRight" style="display: none;"><input type="radio" name="rightContaner" id="goatRight" value="Goat"/>&nbsp;&nbsp;<label for="goatRight">Goat</label></td>
+		</tr>
+		<tr>
+			<td id="td_wolfLeft"><input type="radio" name="leftContaner" id="wolfLeft" value="Wolf"/>&nbsp;&nbsp;<label for="wolfLeft">Wolf</label></td>
+			<td><input type="button" id="goToRight" onclick="goToRight();" value="Go to Right >>"></td>
+			<td><input type="button" id="goToLeft" onclick="goToLeft();" value="<< Go to Left" disabled="disabled"></td>
+			<td id="td_wolfRight" style="display: none;"><input type="radio" name="rightContaner" id="wolfRight" value="Wolf"/>&nbsp;&nbsp;<label for="wolfRight">Wolf</label></td>
+		</tr>
+		<tr>
+			<td id="td_saladLeft"><input type="radio" name="leftContaner" id="saladLeft" value="Salad"/>&nbsp;&nbsp;<label for="saladLeft">Salad</label></td>
+			<td></td>
+			<td></td>
+			<td id="td_saladRight" style="display: none;"><input type="radio" name="rightContaner" id="saladRight" value="Salad"/>&nbsp;&nbsp;<label for="saladRight">Salad</label></td>
+		</tr>
+	</table>
+	<div id="leftSide"></div>
+	<div id="leftSide"></div>
+	</body>
+	<script type="text/javascript">
+		var leftContainer = new Array();
+		leftContainer.push('Goat');
+		leftContainer.push('Wolf');
+		leftContainer.push('Salad');
+		var leftCount = 3;
+		var rightCount = 0;
+		var rightContainer = new Array();
+		function goToRight() {
+			var leftVal = "";
+			if(document.getElementById("goatLeft").checked){
+				leftVal = document.getElementById("goatLeft").value;
+				leftCount--;
+				chkLeft('goat');
+				leftContainer[0] = '';
+				rightContainer[0] = 'Goat';
+			}else if(document.getElementById("wolfLeft").checked){
+				leftVal = document.getElementById("wolfLeft").value;
+				leftCount--;
+				if(leftCount > 1){
+					alert('You cant move Wolf to right side, Goat will eat Salad!!!');
+					leftCount++;
+				}else{
+					chkLeft('wolf');
+					leftContainer[1] = '';
+					rightContainer[1] = 'Wolf';
+				}
+			}else if(document.getElementById("saladLeft").checked){
+				leftVal = document.getElementById("saladLeft").value;
+				leftCount--;
+				if(leftCount > 1){
+					alert('You cant move Salad to right side, Wolf will eat to Goat!!!');
+					leftCount++;
+				}else{
+					chkLeft('salad');
+					leftContainer[2] = '';
+					rightContainer[2] = 'Salad';
+				}
+			}else{
+				alert('Please take any one, Cant go empty');
+			}
+		}
+		
+		function chkLeft(id) {
+			rightCount++;
+			document.getElementById('goToRight').disabled = true;
+			document.getElementById('td_'+id+'Left').style.display = 'table-column';
+			document.getElementById(id+"Left").checked = false;
+			document.getElementById('td_'+id+'Right').style.display = 'table-cell';
+			if(rightCount < 3)
+				document.getElementById('goToLeft').disabled = false;
+			else
+				alert('Congrats you are the winner!!!!!!!!!');
+		}
+		
+		function goToLeft() {
+			var rightVal = "";
+			if(document.getElementById("goatRight").checked){
+				rightVal = document.getElementById("goatRight").value;
+				rightCount--;
+				chkRight('goat');
+				leftContainer[0] = rightVal;
+				rightContainer[0] = '';
+			}else if(document.getElementById("wolfRight").checked){
+				rightVal = document.getElementById("wolfRight").value;
+				rightCount--;
+				if(rightCount > 1){
+					alert('You cant move Wolf to left side, Goat will eat Salad!!!');
+					rightCount++;
+				}else{
+					chkRight('wolf');
+					leftContainer[1] = rightVal;
+					rightContainer[1] = '';
+				}
+			}else if(document.getElementById("saladRight").checked){
+				rightVal = document.getElementById("saladRight").value;
+				rightCount--;
+				if(rightCount > 1){
+					alert('You cant move Salad to left side, Wolf will eat to Goat!!!');
+					rightCount++;
+				}else{
+					chkRight('salad');
+					leftContainer[2] = rightVal;
+					rightContainer[2] = '';
+				}
+			}else{
+				if(rightCount > 1){
+					
+					if(rightContainer[0] == 'Goat' && rightContainer[1] == 'Wolf'){
+						alert('You cant move empty to left side, Wolf will eat to Goat!!!');
+					}else if(rightContainer[0] == 'Goat' && rightContainer[2] == 'Salad'){
+						alert('You cant move empty to left side, Goat will eat Salad!!!');
+					}else{
+						document.getElementById('goToLeft').disabled = true;
+						document.getElementById('goToRight').disabled = false;
+					}
+				}else{
+					document.getElementById('goToLeft').disabled = true;
+					document.getElementById('goToRight').disabled = false;
+				}
+				
+			}
+		}
+		
+		function chkRight(id) {
+			leftCount++;
+			document.getElementById('goToLeft').disabled = true;
+			document.getElementById('goToRight').disabled = false;
+			document.getElementById('td_'+id+'Left').style.display = 'table-cell';
+			document.getElementById(id+"Right").checked = false;
+			document.getElementById('td_'+id+'Right').style.display = 'table-column';
+		}
+	</script>
+</html>
